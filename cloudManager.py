@@ -337,8 +337,11 @@ def rename(dir_listbox):
         fileID = pydrive.return_id_by_name(file_name[1:len(file_name)], dir_list)
         print fileID
         file1 = pydrive.drive.CreateFile({'id': fileID})
+        file1.FetchMetadata(fetch_all=True)
         file1['title'] = newname
         file1.Upload()
+
+
         dir_listbox.delete(0, END)
         dir_list = pydrive.print_dir(current_dir, dir_list)
     if account_type == 'dropbox':
