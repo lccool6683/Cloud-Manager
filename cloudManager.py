@@ -80,10 +80,10 @@ def CheckLogin():
     global account_sel_window
     global userID
     global account_list, account_dict, userID
-    #username = nameEL.get()
-    #password = pwordEL.get()
-    username = 'testuser'
-    password = 'password'
+    username = nameEL.get()
+    password = pwordEL.get()
+    #username = 'testuser'
+    #password = 'password'
     (success, userID) = login(username, password)
     if success:  # Checks to see if you entered the correct data.
         frame.destroy()
@@ -125,7 +125,16 @@ def dir_load(account_list, account_dict, userID, gui = None):
 
     if account_type == 'google':
         global pydrive, current_dir, dir_list
-        pydrive = pycloud(account_dict, account_name, userID)
+        try:
+            pydrive = pycloud(account_dict, account_name, userID)
+        except:
+            r = Tk()
+            r.title('Error')
+            r.geometry('150x50')
+            rlbl = Label(r, text='\nUnauthorized device')
+            rlbl.pack()
+            r.mainloop()
+            return
         current_dir = "root"
         dir_list = ''
         dir_list = pydrive.print_dir(current_dir, dir_list)
